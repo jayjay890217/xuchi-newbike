@@ -58,6 +58,7 @@ textarea{min-height:76px}
 .sheet .sign{height:30mm}
 .sheet .sign td{vertical-align:top}
 .sheet img.sig{height:24mm;max-width:100%}
+.sheet img.stampimg{height:25mm;margin-top:1mm;-webkit-print-color-adjust:exact;print-color-adjust:exact}
 .sheet .stamp{display:inline-block;border:2px solid #1e3f9e;color:#1e3f9e;padding:3px 8px;transform:rotate(-3deg);text-align:center;line-height:1.3;border-radius:6px;font-size:11px;margin-top:2px}
 .sheet .stamp b{font-size:15px;letter-spacing:.05em}
 .sheet .tm{border:1.5px solid #000;border-top:0;padding:4px 8px}
@@ -304,7 +305,7 @@ function sheetHtml(d,copyLabel){
    '<tr><th>備　註</th><td colspan="5" class="v" style="height:15mm;vertical-align:top;white-space:pre-wrap">'+esc(d.remark)+'</td></tr>'+
    '</table>'+
    '<table class="sign"><tr>'+
-   '<td style="width:50%"><b>賣方車行店章</b><br><div class="stamp"><b>'+esc(SHOP.name)+'</b><br>免用發票專用章<br>統一編號 '+esc(SHOP.taxId)+'<br>負責人：'+esc(SHOP.owner)+'</div></td>'+
+   '<td style="width:50%"><b>賣方車行店章</b><br><img class="stampimg" src="stamp.png" alt="旭馳車業行 店章"></td>'+
    '<td><b>買方簽約：</b><br>'+(d.sig1?'<img class="sig" src="'+d.sig1+'">':'')+'</td>'+
    '</tr></table>'+
    '<div class="tm">'+terms+'</div>'+
