@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>新車購買須知</title>
+<style>
+:root{--bg:#f4f2ee;--card:#fff;--ink:#1d1d1f;--muted:#666;--line:#e1ddd4;--accent:#0b4f8a;--accent2:#c2410c;--soft:#e8f1fa;--warn:#fff4cc}
+@media (prefers-color-scheme:dark){:root{--bg:#18181a;--card:#242428;--ink:#efefef;--muted:#a3a3ab;--line:#3c3c42;--accent:#7ab6ee;--accent2:#fb923c;--soft:#1f2f3f;--warn:#4a3d10}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;font-size:17px;line-height:1.6}
+.wrap{max-width:640px;margin:0 auto;padding:0 16px 40px}
+.hero{padding:28px 0 8px}
+.hero small{color:var(--accent);font-weight:700;letter-spacing:.1em}
+.hero h1{margin:4px 0 6px;font-size:28px;line-height:1.25}
+.hero p{margin:0;color:var(--muted)}
+.draft{background:var(--warn);border-radius:10px;padding:8px 12px;margin:12px 0;font-size:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;margin-top:16px}
+.card h2{margin:0 0 10px;font-size:20px;display:flex;gap:10px;align-items:center}
+.num{flex:none;width:30px;height:30px;border-radius:50%;background:var(--accent);color:var(--card);display:grid;place-items:center;font-size:16px;font-weight:700}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.box{background:var(--soft);border-radius:12px;padding:14px}
+.box b{display:block;font-size:15px;color:var(--accent);margin-bottom:4px}
+.box span{font-size:19px;font-weight:700}
+ul{margin:8px 0 0;padding-left:22px}
+li{margin:4px 0}
+.tag{display:inline-block;border-radius:999px;background:var(--soft);color:var(--accent);padding:1px 10px;font-size:14px;font-weight:600;margin-right:6px}
+table{width:100%;border-collapse:collapse;margin-top:8px;font-size:16px}
+th,td{padding:9px 6px;border-bottom:1px solid var(--line);text-align:left}
+th{color:var(--muted);font-size:14px;font-weight:600}
+td.amt{text-align:right;font-weight:700;color:var(--accent2);white-space:nowrap}
+.step{display:flex;gap:12px;margin-top:12px}
+.step .dot{flex:none;width:12px;height:12px;border-radius:50%;background:var(--accent);margin-top:8px}
+.step .t{font-weight:700}
+.fine{color:var(--muted);font-size:14px;margin-top:10px}
+a.btn{display:block;text-align:center;margin-top:16px;padding:14px;border-radius:12px;background:var(--accent);color:var(--card);text-decoration:none;font-weight:700;min-height:48px}
+@media (max-width:420px){.two{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <small>旭馳車業行</small>
+    <h1>買新車，要準備什麼？</h1>
+    <p>簽約只要帶證件，其他我們幫您處理。</p>
+  </div>
+  <div class="draft" id="draft">草稿：內容需店家確認後才正式上線。</div>
+
+  <div class="card">
+    <h2><span class="num">1</span>一般購車，帶這個就好</h2>
+    <div class="two">
+      <div class="box"><b>本國人</b><span>身分證</span></div>
+      <div class="box"><b>外國人</b><span>居留證</span></div>
+    </div>
+    <p class="fine">牌照、保險、過戶都由店內代辦，您只要簽名確認。</p>
+  </div>
+
+  <div class="card">
+    <h2><span class="num">2</span>有舊車要汰舊換新？</h2>
+    <p style="margin:0">舊車報廢、換買新車，可以申請政府貨物稅減徵，再加上公司加碼。請多帶：</p>
+    <ul>
+      <li><b>舊車行照</b></li>
+      <li><b>舊車車主的證件</b></li>
+    </ul>
+    <p style="margin:14px 0 4px"><span class="tag">新舊車主同一人</span>帶上面的證件就可以。</p>
+    <p style="margin:6px 0 0"><span class="tag">新舊車主不同人</span>需要填寫「中古機車與新機車車籍登記之車主非同一人聲明書」，兩位車主都要簽章，資料務必填寫完整。聲明書店內有準備。</p>
+    <p class="fine">舊車條件（草稿）：出廠滿 4 年以上、排氣量 150cc 以下；舊車報廢與新車領牌，時間相差不超過 6 個月。實際資格由店員為您確認。</p>
+  </div>
+
+  <div class="card">
+    <h2><span class="num">3</span>汰舊可以拿多少？</h2>
+    <p style="margin:0 0 4px"><b>政府貨物稅減徵</b></p>
+    <ul>
+      <li>汰舊換新：最高減徵 4,000 元，以該車應繳貨物稅為上限。</li>
+      <li>新購 150cc 以下新機車：另可減徵 2,000 元，舊車不用報廢也可以。</li>
+    </ul>
+    <table>
+      <tr><th>車款（本月）</th><th style="text-align:right">汰舊貨物稅減徵</th></tr>
+      <tr><td>WOO115</td><td class="amt">3,600</td></tr>
+      <tr><td>活力 VIVO125</td><td class="amt">3,900</td></tr>
+    </table>
+    <p style="margin:18px 0 4px"><b>公司加碼匯退（本月）</b></p>
+    <table>
+      <tr><th>車款</th><th style="text-align:right">加碼匯退</th></tr>
+      <tr><td>新瘦迪<br><small style="color:var(--muted)">需有汰舊換新</small></td><td class="amt">6,000</td></tr>
+      <tr><td>螞蟻 125 / 150</td><td class="amt">2,000</td></tr>
+    </table>
+    <p class="fine">金額為 2026 年 10 月專案，其他車款請洽店員。實際金額以政府與原廠公告為準。</p>
+  </div>
+
+  <div class="card">
+    <h2><span class="num">4</span>汰舊獎金什麼時候拿到？</h2>
+    <div class="step"><div class="dot"></div><div><div class="t">① 先付全額</div>您先把車款全額付清，我們幫您辦牌照。</div></div>
+    <div class="step"><div class="dot"></div><div><div class="t">② 送件申請退稅</div>由店家代您向國稅局辦理。</div></div>
+    <div class="step"><div class="dot"></div><div><div class="t">③ 匯到您的帳戶</div>退稅核准後匯給您。公司加碼匯退，約在<b>領牌後 1～2 個月</b>匯入。</div></div>
+    <p class="fine">請提供您本人的銀行帳戶，匯款日期依政府與原廠作業時間而定。</p>
+  </div>
+
+  <div class="card">
+    <h2>想知道實際價錢？</h2>
+    <p style="margin:0">選好車款，馬上試算現金價和分期每期金額。</p>
+    <a class="btn" href="price.html">查詢新車價格</a>
+  </div>
+</div>
+<script>
+// 正式上線時，把 DRAFT 改成 false 即可隱藏草稿提示
+var DRAFT=true; if(!DRAFT) document.getElementById("draft").style.display="none";
+</script>
+</body>
+</html>

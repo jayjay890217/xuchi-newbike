@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>機車買賣合約書</title>
+<style>
+:root{--bg:#f3f1ec;--card:#fff;--ink:#1c1c1c;--muted:#6b6b6b;--line:#cfcac0;--accent:#0b4f8a;--accent-ink:#fff;--warn:#b3261e}
+@media (prefers-color-scheme:dark){:root{--bg:#1b1b1d;--card:#26262a;--ink:#ececec;--muted:#a0a0a8;--line:#45454c;--accent:#6aa9e6;--accent-ink:#0b1a2a}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;font-size:17px;line-height:1.5}
+header{position:sticky;top:0;z-index:5;background:var(--card);border-bottom:1px solid var(--line);padding:10px 16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+header h1{font-size:19px;margin:0;flex:1 1 auto}
+header .no{color:var(--warn);font-weight:700;font-size:20px}
+button{font:inherit;min-height:44px;padding:0 18px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
+button.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:600}
+main{max-width:860px;margin:0 auto;padding:16px}
+section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:16px}
+section h2{font-size:17px;margin:0 0 12px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.grid .full{grid-column:1/-1}
+@media (max-width:560px){.grid{grid-template-columns:1fr}}
+label{display:block;font-size:14px;color:var(--muted)}
+input,select,textarea{width:100%;font:inherit;font-size:17px;min-height:44px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);margin-top:4px}
+textarea{min-height:76px}
+.row{display:flex;gap:16px;flex-wrap:wrap;align-items:center}
+.row label{display:flex;gap:8px;align-items:center;color:var(--ink);font-size:17px}
+.row input[type=checkbox],.row input[type=radio]{width:24px;height:24px;min-height:0;margin:0}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.chips button{min-height:38px;padding:0 12px;font-size:15px}
+.cn{font-size:14px;color:var(--accent);margin-top:2px;min-height:20px}
+.terms{font-size:15px;color:var(--ink)}
+.terms ol{padding-left:22px;margin:6px 0}
+.pad{border:2px dashed var(--line);border-radius:10px;background:#fff;touch-action:none;width:100%;height:170px;display:block}
+.padbar{display:flex;justify-content:space-between;align-items:center;margin-top:6px;color:var(--muted);font-size:14px}
+.note{font-size:14px;color:var(--muted)}
+#printArea{display:none}
+
+/* ===== 列印版型 ===== */
+@page{size:A4;margin:8mm}
+@media print{
+  body{background:#fff}
+  header,main{display:none!important}
+  #printArea{display:block}
+  .sheet{page-break-after:always;break-after:page}
+  .sheet:last-child{page-break-after:auto;break-after:auto}
+}
+.sheet{position:relative;width:194mm;margin:0 auto;padding-right:8mm;color:#000;font-family:"Noto Serif TC","PMingLiU","Microsoft JhengHei",serif;font-size:11.5px;line-height:1.45;background:#fff}
+.sheet h1{text-align:center;font-size:25px;letter-spacing:.5em;margin:0 0 4px;border-bottom:2px solid #000;display:inline-block;padding:0 10px}
+.sheet .top{display:flex;justify-content:space-between;align-items:flex-end}
+.sheet .sn{color:#c00;font-size:24px;font-weight:700}
+.sheet table{width:100%;border-collapse:collapse;table-layout:fixed}
+.sheet td,.sheet th{border:1.5px solid #000;padding:3px 6px;vertical-align:middle;font-weight:400;text-align:left}
+.sheet th{letter-spacing:.35em;text-align:center;width:17%}
+.sheet .v{color:#0a2a8c;font-size:13px;font-weight:600}
+.sheet .big{font-size:12.5px}
+.sheet .side{position:absolute;top:0;right:0;width:7mm;writing-mode:vertical-rl;font-size:11px;letter-spacing:.2em}
+.sheet .sign{height:30mm}
+.sheet .sign td{vertical-align:top}
+.sheet img.sig{height:24mm;max-width:100%}
+.sheet .stamp{display:inline-block;border:2px solid #1e3f9e;color:#1e3f9e;padding:3px 8px;transform:rotate(-3deg);text-align:center;line-height:1.3;border-radius:6px;font-size:11px;margin-top:2px}
+.sheet .stamp b{font-size:15px;letter-spacing:.05em}
+.sheet .tm{border:1.5px solid #000;border-top:0;padding:4px 8px}
+.sheet .tm p{margin:1px 0}
+.sheet .pd{margin-top:8px;font-size:10.5px;line-height:1.4}
+.sheet .pd p{margin:1px 0}
+.sheet .agree{font-weight:700;font-size:12px;margin-top:5px}
+</style>
+</head>
+<body>
+<header>
+  <h1>機車買賣合約書</h1>
+  <span>編號 <span class="no" id="hdrNo"></span></span>
+  <button id="btnNew">新增一份</button>
+  <button class="primary" id="btnPrint">列印（兩聯）</button>
+</header>
+
+<main>
+<section>
+  <h2>一、車輛與訂購資料</h2>
+  <div class="grid">
+    <div><label>合約編號<input id="no" inputmode="numeric"></label></div>
+    <div><label>訂購日期（民國）
+      <div class="row" style="margin-top:4px;gap:6px;flex-wrap:nowrap">
+        <input id="dy" inputmode="numeric" style="width:30%"> 年
+        <input id="dm" inputmode="numeric" style="width:25%"> 月
+        <input id="dd" inputmode="numeric" style="width:25%"> 日
+      </div></label></div>
+    <div class="full">
+      <div class="row">
+        <label><input type="radio" name="reg" value="未領照新車" checked>未領照新車</label>
+        <label><input type="radio" name="reg" value="已領照新車">已領照新車</label>
+      </div>
+    </div>
+    <div class="full"><label>機種（可從價目表選，也可自己打）
+      <input id="model" list="modelList" placeholder="點一下選擇車款"></label>
+      <datalist id="modelList"></datalist></div>
+    <div><label>代號<input id="code"></label></div>
+    <div><label>排氣量（cc）<input id="cc" inputmode="numeric"></label></div>
+    <div><label>顏色<input id="color"></label></div>
+    <div><label>引擎號碼（交車時填）<input id="engine"></label></div>
+  </div>
+</section>
+
+<section>
+  <h2>二、買方資料</h2>
+  <div class="grid">
+    <div><label>顧客姓名<input id="name" autocomplete="off"></label></div>
+    <div><label>出生日期（民國，例 87/10/16）<input id="birth" inputmode="numeric"></label></div>
+    <div><label>身分證／居留證號<input id="idno" autocapitalize="characters" autocomplete="off"></label></div>
+    <div><label>手機<input id="mobile" inputmode="tel"></label></div>
+    <div><label>市話<input id="tel" inputmode="tel"></label></div>
+    <div class="full"><label>住址<input id="addr"></label></div>
+  </div>
+</section>
+
+<section>
+  <h2>三、金額</h2>
+  <div class="grid">
+    <div class="full"><div class="row">
+      <label><input type="radio" name="pay" value="cash" checked>現金一次付清價</label>
+      <label><input type="radio" name="pay" value="inst">分期購車價</label>
+    </div></div>
+    <div><label>總價（元）<input id="total" inputmode="numeric"></label><div class="cn" id="totalCn"></div></div>
+    <div><label>訂金（元）<input id="deposit" inputmode="numeric"></label><div class="cn" id="depositCn"></div></div>
+    <div><label>餘額（元，自動計算）<input id="balance" inputmode="numeric"></label><div class="cn" id="balanceCn"></div></div>
+    <div><label>其他費用（元，含代辦領牌、過戶費、強制險、手續費）<input id="other" inputmode="numeric"></label><div class="cn" id="otherCn"></div></div>
+    <div><label>分期期數（不分期留空）<input id="periods" inputmode="numeric"></label></div>
+    <div><label>每期金額（元）<input id="perAmt" inputmode="numeric"></label></div>
+    <div class="full"><label>交車日期（民國，費用付清期限）
+      <div class="row" style="margin-top:4px;gap:6px;flex-wrap:nowrap">
+        <input id="ty" inputmode="numeric" style="width:30%"> 年
+        <input id="tm" inputmode="numeric" style="width:25%"> 月
+        <input id="td" inputmode="numeric" style="width:25%"> 日
+      </div></label></div>
+  </div>
+</section>
+
+<section>
+  <h2>四、備註</h2>
+  <label>備註內容<textarea id="remark"></textarea></label>
+  <div class="chips" id="chips"></div>
+  <p class="note">點上面的按鈕會把常用項目加到備註，也可以直接手打。</p>
+</section>
+
+<section class="terms">
+  <h2>五、合約條款（請客戶閱讀）</h2>
+  <ol id="termList"></ol>
+</section>
+
+<section>
+  <h2>六、簽名</h2>
+  <label>買方簽約</label>
+  <canvas class="pad" id="pad1"></canvas>
+  <div class="padbar"><span>請客戶用手指或 Apple Pencil 簽名</span><button data-clear="pad1">清除重簽</button></div>
+  <div style="height:16px"></div>
+  <label>個人資料告知同意書：立同意書人</label>
+  <div class="terms" id="pdBox" style="max-height:220px;overflow:auto;border:1px solid var(--line);border-radius:8px;padding:8px;margin:6px 0"></div>
+  <canvas class="pad" id="pad2"></canvas>
+  <div class="padbar"><span>本人已清楚瞭解並同意上開告知事項</span><button data-clear="pad2">清除重簽</button></div>
+</section>
+</main>
+
+<div id="printArea"></div>
+
+<script src="prices.js"></script>
+<script>
+// ====== 固定文字（照原合約） ======
+var TERMS=[
+ "機車領牌、所有權登記、過戶等手續買方同意委託賣方代辦，並配合政府機關要求提供必要證件予賣方；未帶印章者，買方同意委託賣方代刻。",
+ "訂金付清後，買方毀約或未按時付清者，賣方得沒收訂金，並逕行解約及請求賠償所生損害。",
+ "買方未繳清全部總價金前，上開機車所有權仍屬賣方所有。",
+ "機車於交付時買方檢視核對無誤後，如交付後發生變造，違法情事與賣方無關。",
+ "完成本買賣合約書事項前，買方所交付之身分證件未經賣方同意不得聲明作廢或辦理補發，身分證件如有偽造或變造買方應自負法律責任。"
+];
+var PD=[
+ "為了落實個人資料保護法(以下簡稱個資法)遵循，本公司依法向您告知本公司依法蒐集您的個人資料時，必須告知的事項，請您務必詳閱：",
+ "一、蒐集的目的：<br>商業與技術資訊、客戶管理、行銷、資訊與資料庫管理、統計調查與分析等目的，包括但不只限於作為車輛領牌、辦理強制險、車輛保固、後續維修服務、顧客售後服務、廣宣活動及可能之車輛召回等活動項目。",
+ "二、蒐集之個人資料類別：<br>姓名、出生日期、身分證統一編號（如為外籍人士請提供護照號碼）、戶籍資料、職業、聯絡方式、通訊地址、電子郵件、車籍等資料。",
+ "三、蒐集個人資料利用之期間、地區、對象及方式：<br>1. 期間：個人資料蒐集之特定目的存續期間／依相關法令規定或契約約定之保存年限／本公司因執行業務所必須之保存期間。<br>2. 地區：中華民國境內（含台、澎、金、馬等地區）。<br>3. 對象：經銷商（機車買賣之經銷商或購車商號）、所屬通路商、業務關係人、保險事業及政府機關。",
+ "四、依據個資法第三條規定，您就本公司保有您的個人資料得行使下列權利：<br>1. 得向本公司查詢、請求閱覽或請求製給複製本，而本公司依法得酌收必要成本。<br>2. 得向本公司請求補充或更正，惟依法台端應為適當之釋明。<br>3. 得向本公司請求停止蒐集，處理或利用及請求刪除。<br>4. 台端得透過書面郵寄或親赴本公司提供身份證明文件查核。",
+ "五、注意事項：<br>您可以自由選擇是否提供相關個人資料，但是，您若拒絕提供，將影響享有前述各蒐集個人資料對象所提供的產品保固、售後客服、行銷資訊，牌照代辦及其他相關服務，敬請見諒。"
+];
+var AGREE="本人已清楚瞭解 貴公司上開告知事項內容，並同意 貴公司之蒐集、處理或利用。";
+var REMARK_CHIPS=["送機油一次(500)","大保養一次","道路救援一次(15km)","無汰舊","順編","汰舊換新","加購手機架$800","加購行車紀錄器$1,100"];
+var SHOP={name:"旭馳車業行",taxId:"91399582",owner:"馬振傑"};
+
+var $=function(id){return document.getElementById(id)};
+var FIELDS=["no","dy","dm","dd","model","code","cc","color","engine","name","birth","idno","mobile","tel","addr","total","deposit","balance","other","periods","perAmt","ty","tm","td","remark"];
+
+// ====== 中文大寫金額 ======
+function cnMoney(n){
+  n=Math.round(Number(n));
+  if(!n||n<=0) return "";
+  var d="零壹貳參肆伍陸柒捌玖", u=["","拾","佰","仟"], big=["","萬","億"];
+  var s="", parts=[], i=0;
+  while(n>0){parts.push(n%10000);n=Math.floor(n/10000);}
+  for(i=parts.length-1;i>=0;i--){
+    var p=parts[i], t="", z=false;
+    if(p===0){ if(s&&!/零$/.test(s)) s+="零"; continue; }
+    if(p<1000&&s) z=true;
+    for(var k=3;k>=0;k--){
+      var dig=Math.floor(p/Math.pow(10,k))%10;
+      if(dig===0){ if(t&&!/零$/.test(t)&&(p%Math.pow(10,k)!==0)) t+="零"; }
+      else t+=d[dig]+u[k];
+    }
+    if(z&&t.charAt(0)!=="零") t="零"+t;
+    s+=t+big[i];
+  }
+  return s.replace(/零+$/,"")+"元整";
+}
+function num(id){var v=String($(id).value).replace(/[^\d]/g,"");return v?Number(v):0}
+function fmt(n){return n?n.toLocaleString("en-US"):""}
+
+// ====== 簽名板 ======
+function Pad(id){
+  var c=$(id), ctx=c.getContext("2d"), drawing=false, dirty=false, last=null;
+  function fit(){
+    var r=c.getBoundingClientRect(), dpr=window.devicePixelRatio||1;
+    var img=dirty?c.toDataURL():null;
+    c.width=r.width*dpr; c.height=r.height*dpr;
+    ctx.scale(dpr,dpr); ctx.lineWidth=2.6; ctx.lineCap="round"; ctx.lineJoin="round"; ctx.strokeStyle="#0a2a8c";
+    if(img){var im=new Image();im.onload=function(){ctx.drawImage(im,0,0,r.width,r.height)};im.src=img;}
+  }
+  function pos(e){var r=c.getBoundingClientRect();return {x:e.clientX-r.left,y:e.clientY-r.top}}
+  c.addEventListener("pointerdown",function(e){drawing=true;dirty=true;last=pos(e);c.setPointerCapture(e.pointerId);ctx.beginPath();ctx.arc(last.x,last.y,1.3,0,7);ctx.fill();e.preventDefault()});
+  c.addEventListener("pointermove",function(e){if(!drawing)return;var p=pos(e);ctx.beginPath();ctx.moveTo(last.x,last.y);ctx.lineTo(p.x,p.y);ctx.stroke();last=p;e.preventDefault()});
+  ["pointerup","pointercancel","pointerleave"].forEach(function(t){c.addEventListener(t,function(){drawing=false})});
+  window.addEventListener("resize",function(){setTimeout(fit,50)});
+  setTimeout(fit,0);
+  return {
+    clear:function(){dirty=false;ctx.clearRect(0,0,c.width,c.height);fit()},
+    data:function(){return dirty?c.toDataURL("image/png"):""}
+  };
+}
+var pad1,pad2;
+
+// ====== 資料與流程 ======
+function nextNo(){
+  var n=1; try{n=Number(localStorage.getItem("xuchi_contract_no")||847)+1}catch(e){n=848}
+  return String(n).padStart(5,"0");
+}
+function saveNo(){
+  var n=parseInt($("no").value,10); if(!isNaN(n)){try{localStorage.setItem("xuchi_contract_no",String(n))}catch(e){}}
+}
+function resetForm(){
+  FIELDS.forEach(function(f){$(f).value=""});
+  var t=new Date(); $("dy").value=t.getFullYear()-1911; $("dm").value=t.getMonth()+1; $("dd").value=t.getDate();
+  $("no").value=nextNo(); $("hdrNo").textContent=$("no").value;
+  document.querySelector('input[name=reg][value="未領照新車"]').checked=true;
+  document.querySelector('input[name=pay][value=cash]').checked=true;
+  pad1.clear(); pad2.clear(); calc(); window.scrollTo(0,0);
+}
+function calc(){
+  var tot=num("total"), dep=num("deposit");
+  if(document.activeElement!==$("balance")) $("balance").value=(tot||dep)?fmt(Math.max(tot-dep,0)):"";
+  $("totalCn").textContent=cnMoney(tot); $("depositCn").textContent=cnMoney(dep);
+  $("balanceCn").textContent=cnMoney(num("balance")); $("otherCn").textContent=cnMoney(num("other"));
+  $("hdrNo").textContent=$("no").value;
+}
+function pickModel(){
+  var v=$("model").value, row=null;
+  window.PRICES.forEach(function(r){ if(label(r)===v) row=r; });
+  if(!row) return;
+  $("model").value=row.m+(row.f?" "+row.f:"");
+  $("code").value=row.c;
+  var mm=/(\d{3})/.exec(row.m+row.c); if(mm) $("cc").value=mm[1];
+  applyPrice(row);
+}
+function label(r){return r.m+(r.f?" "+r.f:"")+"（"+r.c+"）"}
+function currentRow(){var r=null;window.PRICES.forEach(function(x){if(x.c===$("code").value)r=x});return r}
+function applyPrice(row){
+  row=row||currentRow(); if(!row) return;
+  var inst=document.querySelector("input[name=pay]:checked").value==="inst";
+  $("total").value=fmt(inst?row.inst:row.cash);
+  if(inst&&row.p36&&!$("periods").value){/* 期數由店員選 */}
+  calc();
+}
+function val(id){return $(id).value.trim()}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+
+function sheetHtml(d,copyLabel){
+  var reg=d.reg;
+  function money(n){return n?esc(fmt(n))+" 元整　"+esc(cnMoney(n)):""}
+  var terms=TERMS.map(function(t,i){return "<p>"+"一二三四五".charAt(i)+"、"+esc(t)+"</p>"}).join("");
+  var pd=PD.map(function(p,i){return "<p>"+(i===0?p:p)+"</p>"}).join("");
+  return '<div class="sheet">'+
+   '<div class="side">本合約書為一式二聯：第一聯：車行保存聯(白)　第二聯：買方保存聯(藍)　—　'+esc(copyLabel)+'</div>'+
+   '<div class="top"><h1>機 車 買 賣 合 約 書</h1><div class="sn">'+esc(d.no)+'</div></div>'+
+   '<table>'+
+   '<tr><th>車行名稱</th><td class="v big">'+esc(SHOP.name)+'</td><th style="width:13%">訂購日期</th><td class="v" colspan="3">'+esc(d.dy)+' 年 '+esc(d.dm)+' 月 '+esc(d.dd)+' 日</td></tr>'+
+   '<tr><th rowspan="2">購買機種</th><td rowspan="2" class="big">'+(reg==="未領照新車"?"☑":"☐")+' 未領照新車<br>'+(reg==="已領照新車"?"☑":"☐")+' 已領照新車</td>'+
+     '<th>機　種</th><td class="v">'+esc(d.model)+'</td><th>排氣量</th><td class="v">'+esc(d.cc)+'</td></tr>'+
+   '<tr><th>顏　色</th><td class="v">'+esc(d.color)+'</td><th>引擎號碼</th><td class="v">'+esc(d.engine)+'</td></tr>'+
+   '<tr><th>顧客姓名</th><td class="v big">'+esc(d.name)+'</td><th>出生日期</th><td class="v">'+esc(d.birth)+'</td><th>身分證號</th><td class="v">'+esc(d.idno)+'</td></tr>'+
+   '<tr><th>聯絡電話</th><td colspan="5">市話：<span class="v">'+esc(d.tel)+'</span>　　　　手機：<span class="v">'+esc(d.mobile)+'</span></td></tr>'+
+   '<tr><th>住　址</th><td colspan="5" class="v">'+esc(d.addr)+'</td></tr>'+
+   '<tr><th>總　價</th><td colspan="5">新台幣　<span class="v">'+money(d.total)+'</span></td></tr>'+
+   '<tr><th>訂　金</th><td colspan="5">新台幣　<span class="v">'+money(d.deposit)+'</span></td></tr>'+
+   '<tr><th>餘　額</th><td colspan="5">新台幣　<span class="v">'+money(d.balance)+'</span></td></tr>'+
+   '<tr><th>其他費用</th><td colspan="5">新台幣　<span class="v">'+money(d.other)+'</span>　(含代辦領牌、過戶費、強制險、手續費)</td></tr>'+
+   '<tr><th>分期付款</th><td colspan="5">分 <span class="v">'+esc(d.periods)+'</span> 期，每期：新台幣 <span class="v">'+(d.perAmt?esc(fmt(d.perAmt))+' 元整':'')+'</span></td></tr>'+
+   '<tr><th>交車日期</th><td colspan="5">中華民國 <span class="v">'+esc(d.ty)+'</span> 年 <span class="v">'+esc(d.tm)+'</span> 月 <span class="v">'+esc(d.td)+'</span> 日（費用付清期限）</td></tr>'+
+   '<tr><th>備　註</th><td colspan="5" class="v" style="height:15mm;vertical-align:top;white-space:pre-wrap">'+esc(d.remark)+'</td></tr>'+
+   '</table>'+
+   '<table class="sign"><tr>'+
+   '<td style="width:50%"><b>賣方車行店章</b><br><div class="stamp"><b>'+esc(SHOP.name)+'</b><br>免用發票專用章<br>統一編號 '+esc(SHOP.taxId)+'<br>負責人：'+esc(SHOP.owner)+'</div></td>'+
+   '<td><b>買方簽約：</b><br>'+(d.sig1?'<img class="sig" src="'+d.sig1+'">':'')+'</td>'+
+   '</tr></table>'+
+   '<div class="tm">'+terms+'</div>'+
+   '<div class="pd">'+pd+'<p class="agree">'+esc(AGREE)+'</p>'+
+   '<p style="margin-top:6px">立同意書人：'+(d.sig2?'<img class="sig" style="height:14mm;vertical-align:middle" src="'+d.sig2+'">':'<span style="display:inline-block;width:80mm;border-bottom:1px solid #000">&nbsp;</span>')+'</p></div>'+
+  '</div>';
+}
+function collect(){
+  var d={}; FIELDS.forEach(function(f){d[f]=val(f)});
+  ["total","deposit","balance","other","perAmt"].forEach(function(f){d[f]=num(f)});
+  d.reg=document.querySelector("input[name=reg]:checked").value;
+  d.sig1=pad1.data(); d.sig2=pad2.data();
+  return d;
+}
+function doPrint(){
+  saveNo();
+  var d=collect();
+  if(!d.name||!d.model){ if(!confirm("姓名或機種還沒填，確定要列印嗎？")) return; }
+  $("printArea").innerHTML=sheetHtml(d,"車行保存聯")+sheetHtml(d,"買方保存聯");
+  setTimeout(function(){window.print()},120);
+}
+
+// ====== 初始化 ======
+function init(){
+  var dl=$("modelList");
+  window.PRICES.forEach(function(r){var o=document.createElement("option");o.value=label(r);dl.appendChild(o)});
+  $("termList").innerHTML=TERMS.map(function(t){return "<li>"+esc(t)+"</li>"}).join("");
+  $("pdBox").innerHTML=PD.join("<br><br>")+"<br><br><b>"+esc(AGREE)+"</b>";
+  var chips=$("chips");
+  REMARK_CHIPS.forEach(function(t){var b=document.createElement("button");b.type="button";b.textContent=t;
+    b.onclick=function(){var r=$("remark");r.value=(r.value?r.value.replace(/[，,\s]+$/,"")+"，":"")+t};chips.appendChild(b)});
+  pad1=Pad("pad1"); pad2=Pad("pad2");
+  document.querySelectorAll("[data-clear]").forEach(function(b){b.onclick=function(){(b.dataset.clear==="pad1"?pad1:pad2).clear()}});
+  $("model").addEventListener("change",pickModel);
+  $("model").addEventListener("input",pickModel);
+  document.querySelectorAll("input[name=pay]").forEach(function(r){r.addEventListener("change",function(){applyPrice();
+    if(r.value==="cash"){$("periods").value="";$("perAmt").value=""}})});
+  $("periods").addEventListener("input",function(){
+    var row=currentRow(),p=num("periods"); if(!row) return;
+    var amt={12:row.p12,24:row.p24,36:row.p36}[p]; $("perAmt").value=amt?fmt(amt):"";
+  });
+  ["total","deposit","balance","other","periods","perAmt","no"].forEach(function(f){$(f).addEventListener("input",calc)});
+  ["total","deposit","balance","other","perAmt"].forEach(function(f){$(f).addEventListener("blur",function(){var n=num(f);$(f).value=fmt(n);calc()})});
+  $("no").addEventListener("change",saveNo);
+  $("btnNew").onclick=function(){if(confirm("要清空目前資料，開新的一份嗎？")){saveNo();resetForm()}};
+  $("btnPrint").onclick=doPrint;
+  resetForm();
+}
+window.addEventListener("load",init);
+</script>
+</body>
+</html>

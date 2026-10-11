@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>新車價格查詢</title>
+<style>
+:root{--bg:#f4f2ee;--card:#fff;--ink:#1d1d1f;--muted:#666;--line:#e1ddd4;--accent:#0b4f8a;--accent2:#c2410c;--soft:#e8f1fa;--green:#14703a;--warn:#fff4cc}
+@media (prefers-color-scheme:dark){:root{--bg:#18181a;--card:#242428;--ink:#efefef;--muted:#a3a3ab;--line:#3c3c42;--accent:#7ab6ee;--accent2:#fb923c;--soft:#1f2f3f;--green:#5fd18a;--warn:#4a3d10}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;font-size:17px;line-height:1.55}
+.wrap{max-width:640px;margin:0 auto;padding:0 16px 48px}
+h1{font-size:26px;margin:26px 0 4px}
+.sub{color:var(--muted);margin:0 0 4px;font-size:15px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;margin-top:16px}
+.card h2{margin:0 0 10px;font-size:18px}
+label{display:block;font-size:14px;color:var(--muted);margin-bottom:4px}
+select{width:100%;min-height:50px;font:inherit;padding:8px 12px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.chip{min-height:46px;padding:0 16px;border-radius:999px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);font:inherit;cursor:pointer}
+.chip[aria-pressed=true]{background:var(--accent);border-color:var(--accent);color:var(--card);font-weight:700}
+.price{font-size:42px;font-weight:800;color:var(--accent2);line-height:1.1}
+.price small{font-size:18px;font-weight:600;margin-right:2px}
+.list{color:var(--muted);text-decoration:line-through}
+.save{display:inline-block;margin-left:8px;background:var(--soft);color:var(--green);border-radius:999px;padding:2px 10px;font-size:14px;font-weight:700}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.seg button{min-height:46px;border-radius:12px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);font:inherit;cursor:pointer}
+.seg button[aria-pressed=true]{background:var(--soft);border-color:var(--accent);color:var(--accent);font-weight:700}
+table{width:100%;border-collapse:collapse}
+th,td{padding:10px 4px;border-bottom:1px solid var(--line);text-align:left}
+th{font-size:14px;color:var(--muted);font-weight:600}
+td.r,th.r{text-align:right}
+td.big{font-weight:800;font-size:19px;color:var(--accent2)}
+.gift{background:var(--soft);border-radius:12px;padding:12px 14px;margin-top:6px}
+.chk{display:flex;gap:12px;align-items:center;margin-top:12px;font-size:17px;color:var(--ink)}
+.chk input{width:26px;height:26px}
+.line{display:flex;justify-content:space-between;padding:6px 0}
+.line.total{border-top:2px solid var(--ink);margin-top:6px;padding-top:10px;font-weight:800;font-size:19px}
+.fine{font-size:13px;color:var(--muted);margin-top:10px}
+.hide{display:none}
+details summary{cursor:pointer;font-weight:700;min-height:44px;display:flex;align-items:center}
+.btn{display:block;text-align:center;margin-top:14px;padding:14px;border-radius:12px;background:var(--accent);color:var(--card);text-decoration:none;font-weight:700}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>新車價格查詢</h1>
+  <p class="sub">旭馳車業行｜<span id="ver"></span> 專案價</p>
+
+  <div class="card">
+    <label for="series">① 選車款</label>
+    <select id="series"></select>
+    <div class="chips" id="variants"></div>
+    <div class="fine" id="colors"></div>
+  </div>
+
+  <div class="card hide" id="result">
+    <h2>② 價格</h2>
+    <div class="seg">
+      <button id="payCash" aria-pressed="true">現金一次付清</button>
+      <button id="payInst" aria-pressed="false">分期購車</button>
+    </div>
+
+    <div style="margin-top:16px">
+      <div class="list" id="listPrice"></div>
+      <div class="price"><small>NT$</small><span id="mainPrice"></span><span class="save" id="saveTag"></span></div>
+    </div>
+
+    <div id="instBox" class="hide" style="margin-top:14px">
+      <table>
+        <tr><th>期數</th><th class="r">每期</th><th class="r">總付款</th></tr>
+        <tbody id="instRows"></tbody>
+      </table>
+      <div class="fine">以上為公司試算金額，實際利率與核貸以現場審核為準。</div>
+    </div>
+
+    <h2 style="margin-top:20px">本月贈品與優惠</h2>
+    <div class="gift" id="gift"></div>
+
+    <label class="chk"><input type="checkbox" id="trade">我有舊車要汰舊換新</label>
+    <div id="tradeBox" class="hide" style="margin-top:12px">
+      <div class="line"><span>車款價格</span><span id="trPrice"></span></div>
+      <div class="line hide" id="trGovRow"><span>政府貨物稅減徵（退稅後匯給您）</span><span id="trGov"></span></div>
+      <div class="line hide" id="trBonusRow"><span>公司加碼匯退</span><span id="trBonus"></span></div>
+      <div class="line total"><span>預估實際花費</span><span id="trTotal"></span></div>
+      <div class="fine" id="trNote"></div>
+    </div>
+
+    <div class="fine">「現金購車減免」「安心險」等條件，請與店員確認後以簽約內容為準。</div>
+  </div>
+
+  <div class="card hide" id="insBox">
+    <details>
+      <summary>加購保險與選號（點開看）</summary>
+      <table style="margin-top:8px">
+        <tr><td>丟車賠車（此車款）</td><td class="r" id="lostPrice"></td></tr>
+        <tr><td>車碰車（含免追償）</td><td class="r">3萬 $2,700／5萬 $3,000／6萬 $3,200</td></tr>
+        <tr><td>超額險</td><td class="r">300萬 $2,500／500萬 $2,600／1000萬 $2,700</td></tr>
+      </table>
+      <p class="fine">代選牌／標牌費用 300 元起。熱門區域：樹林、板橋共收 1,500，蘆洲 2,000，北市八德 3,000，北市士林 3,000，桃園 3,500，中壢 3,500。</p>
+    </details>
+  </div>
+
+  <a class="btn" href="poster.html">買新車要準備什麼？汰舊怎麼領？</a>
+  <p class="fine" style="text-align:center">價格以現場報價與簽約為準，本頁僅供參考。</p>
+</div>
+
+<script src="prices.js"></script>
+<script>
+var $=function(i){return document.getElementById(i)};
+function fmt(n){return Number(n).toLocaleString("en-US")}
+var state={row:null,pay:"cash"};
+
+function groups(){
+  var g={},order=[];
+  window.PRICES.forEach(function(r){ if(!g[r.m]){g[r.m]=[];order.push(r.m)} g[r.m].push(r) });
+  return {g:g,order:order};
+}
+var G=groups();
+
+function init(){
+  $("ver").textContent=window.PRICE_VERSION;
+  var s=$("series"), o=document.createElement("option"); o.value=""; o.textContent="請選擇車款"; s.appendChild(o);
+  G.order.forEach(function(m){var op=document.createElement("option");op.value=m;op.textContent=m;s.appendChild(op)});
+  s.onchange=function(){ buildVariants(s.value) };
+  $("payCash").onclick=function(){setPay("cash")};
+  $("payInst").onclick=function(){setPay("inst")};
+  $("trade").onchange=render;
+}
+function buildVariants(m){
+  var box=$("variants"); box.innerHTML="";
+  $("colors").textContent="";
+  state.row=null; $("result").classList.add("hide"); $("insBox").classList.add("hide");
+  if(!m) return;
+  G.g[m].forEach(function(r){
+    var b=document.createElement("button"); b.className="chip"; b.type="button";
+    b.textContent=r.f||r.c; b.setAttribute("aria-pressed","false");
+    b.onclick=function(){ pick(r,b) };
+    box.appendChild(b);
+  });
+  if(G.g[m].length===1) box.firstChild.click();
+}
+function pick(r,btn){
+  document.querySelectorAll(".chip").forEach(function(c){c.setAttribute("aria-pressed",c===btn?"true":"false")});
+  state.row=r; render();
+  $("result").classList.remove("hide"); $("insBox").classList.remove("hide");
+}
+function setPay(p){
+  state.pay=p; $("payCash").setAttribute("aria-pressed",p==="cash"); $("payInst").setAttribute("aria-pressed",p==="inst"); render();
+}
+function render(){
+  var r=state.row; if(!r) return;
+  var x=(window.EXTRA||{})[r.c]||{};
+  var price=state.pay==="cash"?r.cash:r.inst;
+  $("colors").textContent=x.color?"本月車色："+x.color:"";
+  $("listPrice").textContent="公告牌價 "+fmt(r.list);
+  $("mainPrice").textContent=fmt(price);
+  var save=r.list-price; $("saveTag").textContent=save>0?"省 "+fmt(save):"";
+  $("saveTag").style.display=save>0?"inline-block":"none";
+
+  // 分期
+  var ib=$("instBox"); ib.classList.toggle("hide",state.pay!=="inst");
+  var rows=[[12,r.p12],[24,r.p24],[36,r.p36]], h="";
+  rows.forEach(function(a){
+    if(a[1]){var tot=a[1]*a[0],extra=tot-r.inst;
+      h+="<tr><td>"+a[0]+" 期"+(extra>20?"<br><small style='color:var(--muted)'>含利息約 "+fmt(extra)+"</small>":"<br><small style='color:var(--green)'>零利率</small>")+"</td><td class='r big'>"+fmt(a[1])+"</td><td class='r'>"+fmt(tot)+"</td></tr>";
+    } else h+="<tr><td>"+a[0]+" 期</td><td class='r' colspan='2' style='color:var(--muted)'>此車款不適用</td></tr>";
+  });
+  $("instRows").innerHTML=h;
+
+  $("gift").textContent=(state.pay==="cash"?x.gc:x.gi)||"請洽店員";
+  $("lostPrice").textContent=x.lost?"$"+fmt(x.lost):"請洽店員";
+
+  // 汰舊
+  var on=$("trade").checked; $("tradeBox").classList.toggle("hide",!on);
+  if(on){
+    $("trPrice").textContent="NT$ "+fmt(price);
+    var gov=x.gov||0, bonus=(x.tradeBonus||0)+(x.buyBonus||0);
+    $("trGovRow").classList.toggle("hide",!gov); $("trGov").textContent="− "+fmt(gov);
+    $("trBonusRow").classList.toggle("hide",!bonus); $("trBonus").textContent="− "+fmt(bonus);
+    $("trTotal").textContent="NT$ "+fmt(price-gov-bonus);
+    $("trNote").textContent=(gov?"":"此車款的貨物稅減徵金額依車款稅額而定，最高 4,000 元，不含在上面的試算內，請洽店員確認。")
+      +" 您需先付全額，退稅與匯退約在領牌後 1～2 個月匯入您的帳戶。";
+  }
+}
+init();
+</script>
+</body>
+</html>
